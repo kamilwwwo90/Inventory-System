@@ -2,6 +2,8 @@ local Itemservice = require(game.ServerScriptService.Services.ItemService)
 local Inventoryservice = require(game.ServerScriptService.Services.InventoryService)
 local DataService = require(game.ServerScriptService.Services.DataService)
 
+-- requiring services and spawner logic
+
 for _, spawner in workspace.Spawners:GetChildren() do
 	spawner.ProximityPrompt.Triggered:Connect(function()
 		if spawner.Name == "WoodSpawner" then
