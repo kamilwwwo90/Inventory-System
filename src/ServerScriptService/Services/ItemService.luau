@@ -18,6 +18,7 @@ local ItemService = {}
 	If triggered the inventory service stores the item in the player's inventory.
 --]]
 
+-- create the item class and store it
 local function CreateItem(object: Model)
 	local ProximityPromt = object:FindFirstChild("ProximityPrompt", true)
 	local name = object.Name
@@ -29,6 +30,7 @@ local function CreateItem(object: Model)
 	end)
 end
 
+-- tag all the children of the folder that aren't already tagged
 local function Tag(Object: Instance)
 	if collectionservice:HasTag(Object, tag) then
 		return
