@@ -45,7 +45,8 @@ local function updateui(inventory)
 			slot:Destroy()
 		end
 	end
-	
+
+	-- cleanup for the rotation loops
 	for _, conn in Connections do
 		conn:Disconnect()
 	end
@@ -80,7 +81,9 @@ local function updateui(inventory)
 		if not collectionservice:HasTag(Model, RotateTag) then
 			collectionservice:AddTag(Model, "Rotate")
 		end
-		
+
+		-- rotation loop
+
 		local conn
 		conn = Runservice.Heartbeat:Connect(function()
 			if not Model.PrimaryPart then
@@ -94,6 +97,8 @@ local function updateui(inventory)
 			end
 		end)
 		table.insert(Connections, conn)
+
+		-- item selection
 		
 		local SelectButton = Slot.SelectButton
 		
@@ -106,12 +111,12 @@ local function updateui(inventory)
 	end
 end
 
--- outside updateui, connects once
 DropButton.MouseButton1Up:Connect(function()
 	if not SelectedItem then return end
 	DropEvent:FireServer(SelectedItem.name)
 end)
 
+-- rotation toggle logic
 RotationToggleButton.MouseButton1Up:Connect(function()
 	if not IsRotating then
 		IsRotating = true
