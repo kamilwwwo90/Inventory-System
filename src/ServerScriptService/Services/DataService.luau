@@ -8,12 +8,14 @@ local ProfileStore = require(SSS.ServerPackages.ProfileStore)
 
 --// Variables
 
+-- Default data template
 local DefaultData = require(Rs.Data.DataTemplate)
 
 local updateuievent = Rs.Events.UpdateInventoryUI
 
 local Data_Store_Key = "PlayerData"
 
+-- create a separete data key for when testing in studio
 if RunService:IsStudio() then
 	Data_Store_Key = "Test_PlayerDataV5"
 end
@@ -63,7 +65,7 @@ function Shared.GetData(Player: Player): DefaultData.PlayerData?
 
 	return profile.Data
 end
-
+-- Loads inventory on join, normally the inventory updates on picking an item
 function Shared.LoadInventory(player)
 	local Data = Profiles[player].Data
 	if not Data then return end
