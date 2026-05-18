@@ -6,6 +6,8 @@ export type Item = {
 	model: Model
 }
 
+-- constatns table for the item refrences
+
 local Constants = {
 	-- Items
 	["Items"] = {
