@@ -13,6 +13,7 @@ local InventoryService = {}
 	It handles adding, removing and stacking items.
 ]]
 
+-- Updates the inventory ui when needed
 local function UpdateInventoryUI(player: Player)
 	local Data = dataservice.GetData(player)
 	if not Data then
@@ -24,7 +25,7 @@ local function UpdateInventoryUI(player: Player)
 	updateuievent:FireClient(player, inventory)
 end
 
--- This function gets called only by the item service
+-- This function gets called only by the item service, so the client cannot store non-existing items
 function InventoryService.Store(item: constants.Item, player: Player)
 	local Data = dataservice.GetData(player)
 	if not Data then
@@ -49,6 +50,7 @@ function InventoryService.Store(item: constants.Item, player: Player)
 	item.model:Destroy()
 end
 
+-- on drop button pressed, drop the selected item
 dropevent.OnServerEvent:Connect(function(player, itemname)
 	local Data = dataservice.GetData(player)
 	if not Data then
@@ -57,7 +59,7 @@ dropevent.OnServerEvent:Connect(function(player, itemname)
 
 	local inventory = Data.inventory
 
-	-- Check if the item that is being requested to drop is actually in the player's inventory.
+	-- Check if the item that is being requested to drop is actually in the player's inventory
 	if not inventory[itemname] then
 		print("The item does not exist in the player's inventory")
 		return
@@ -65,11 +67,13 @@ dropevent.OnServerEvent:Connect(function(player, itemname)
 
 	local rootpart = player.Character:WaitForChild("HumanoidRootPart")
 
+	-- get the spawnpos , wich is 5 studs in front of the rootpart
 	local item = inventory[itemname]
 	local SpawnPos = rootpart.Position + rootpart.CFrame.LookVector * 5
 
 	local amount = item.amount
 
+	--if there are more than 2 items just change the amount, and if there is only one item then delete it
 	if amount > 1 then
 		item.amount -= 1
 	else
@@ -78,6 +82,7 @@ dropevent.OnServerEvent:Connect(function(player, itemname)
 
 	UpdateInventoryUI(player)
 
+	-- drop the item infront of the player
 	for _, v in ItemFolder:GetChildren() do
 		if v.Name == itemname then
 			local Item = v:Clone()
